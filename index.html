@@ -87,53 +87,27 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>html表单中enctype默认为application/x-www-form-urlencoded,如果用来上传文件，需要设置为multipart/form-data</p>
+        <p>html表单中enctype默认为application/x-www-form-urlencoded,如果用来上传文件，需要设置为multipart/form-data.</p>
+<p>框架中为了实现此功能，自顶而下，需要做的有：</p>
+<ol>
+<li>接收请求，判断请求中是否包含文件</li>
+<li>针对文件，将参数统一封装成Parm</li>
+<li>交由控制层调用Service完成相关业务逻辑</li>
+<li>提供UploadHelper助手类，方便文件上传</li>
+</ol>
+<p>上述1.中直接利用ServletFileUpload.isMultipartContent(request)方法判断；3.也是简单的。下面详述2.与4.的实现：</p>
+<h2 id="u7531request_u751F_u6210Param"><a href="#u7531request_u751F_u6210Param" class="headerlink" title="由request生成Param"></a>由request生成Param</h2><p>Param类有两个属性：formParamList,fileParamList;其中formParamList是对普通表单的封装，fileParamList是对文件参数的封装</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//表单参数对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FormParam</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String fieldName;</span><br><span class="line">    <span class="keyword">private</span> Object fieldValue;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//文件参数对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileParam</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String fieldName;</span><br><span class="line">    <span class="keyword">private</span> String fileName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> fileSize;</span><br><span class="line">    <span class="keyword">private</span> String contentType;</span><br><span class="line">    <span class="keyword">private</span> InputStream inputStream;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Param</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;FormParam&gt; formParamList;</span><br><span class="line">    <span class="keyword">private</span> List&lt;FileParam&gt; fileParamList;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 获取表单参数映射</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Object&gt; getFieldMap() &#123;</span><br><span class="line">        ..</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 获取上传文件映射</span><br><span class="line">     * &lt;文件名,FileParam列表&gt;</span><br><span class="line">     * /</span><br><span class="line">    public Map&lt;String, List&lt;FileParam&gt;&gt; getFileMap() &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取所有上传文件(文件可能同名，返回的是list)</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;FileParam&gt; <span class="title">getFileList</span><span class="params">(String fieldName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getFileMap().get(fieldName);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 获取唯一上传文件</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> FileParam <span class="title">getFile</span><span class="params">(String fieldName)</span> </span>&#123;</span><br><span class="line">        List&lt;FileParam&gt; fileParamList = getFileList(fieldName);</span><br><span class="line">        <span class="keyword">if</span> (CollectionUtil.isNotEmpty(fileParamList) &amp;&amp; fileParamList.size() == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> fileParamList.get(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="UploadHelper_u7684_u5B9E_u73B0"><a href="#UploadHelper_u7684_u5B9E_u73B0" class="headerlink" title="UploadHelper的实现"></a>UploadHelper的实现</h2><p>UploadHelper中的关键方法是createParam，通过HttpServletRequest生成Param对象<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">     * 创建请求对象</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Param <span class="title">createParam</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        List&lt;FormParam&gt; formParamList = <span class="keyword">new</span> ArrayList&lt;FormParam&gt;();</span><br><span class="line">        List&lt;FileParam&gt; fileParamList = <span class="keyword">new</span> ArrayList&lt;FileParam&gt;();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Map&lt;String, List&lt;FileItem&gt;&gt; fileItemListMap = servletFileUpload.parseParameterMap(request);</span><br><span class="line">            <span class="keyword">if</span> (CollectionUtil.isNotEmpty(fileItemListMap)) &#123;</span><br><span class="line">                <span class="keyword">for</span> (Map.Entry&lt;String, List&lt;FileItem&gt;&gt; fileItemListEntry : fileItemListMap.entrySet()) &#123;</span><br><span class="line">                    String fieldName = fileItemListEntry.getKey();</span><br><span class="line">                    List&lt;FileItem&gt; fileItemList = fileItemListEntry.getValue();</span><br><span class="line">                    <span class="keyword">if</span> (CollectionUtil.isNotEmpty(fileItemList)) &#123;</span><br><span class="line">                        <span class="keyword">for</span> (FileItem fileItem : fileItemList) &#123;</span><br><span class="line">                            <span class="keyword">if</span> (fileItem.isFormField()) &#123;</span><br><span class="line">                                String fieldValue = fileItem.getString(<span class="string">"UTF-8"</span>);</span><br><span class="line">                                formParamList.add(<span class="keyword">new</span> FormParam(fieldName, fieldValue));</span><br><span class="line">                            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                                String fileName = FileUtil.getRealFileName(<span class="keyword">new</span> String(fileItem.getName().getBytes(), <span class="string">"UTF-8"</span>));</span><br><span class="line">                                <span class="keyword">if</span> (StringUtil.isNotEmpty(fileName)) &#123;</span><br><span class="line">                                    <span class="keyword">long</span> fileSize = fileItem.getSize();</span><br><span class="line">                                    String contentType = fileItem.getContentType();</span><br><span class="line">                                    InputStream inputSteam = fileItem.getInputStream();</span><br><span class="line">                                    fileParamList.add(<span class="keyword">new</span> FileParam(fieldName, fileName, fileSize, contentType, inputSteam));</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileUploadException e) &#123;</span><br><span class="line">            LOGGER.error(<span class="string">"create param failure"</span>, e);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Param(formParamList, fileParamList);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xutch.github.io/2016/05/21/SmartFramework-文件上传/" data-id="cioh5k5tb0000bwq2k6havfvl" class="article-share-link">Share</a>
+      <a data-url="http://xutch.github.io/2016/05/21/SmartFramework-文件上传/" data-id="cioh5t0eu0000o4q2d9e8dyez" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SmartFramework/">SmartFramework</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-test" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/21/test/" class="article-date">
-  <time datetime="2016-05-21T12:43:51.000Z" itemprop="datePublished">2016-05-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/21/test/">test</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://xutch.github.io/2016/05/21/test/" data-id="cioh5k5tt0003bwq2zmqznakh" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -171,7 +145,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -184,10 +158,6 @@
         
           <li>
             <a href="/2016/05/21/SmartFramework-文件上传/">SmartFramework-文件上传</a>
-          </li>
-        
-          <li>
-            <a href="/2016/05/21/test/">test</a>
           </li>
         
       </ul>
