@@ -11,9 +11,7 @@
 接收请求，判断请求中是否包含文件
 针对文件，将参数统一封装成Parm
 交由控制层调用Service完成相关业务逻辑
-提供UploadHelper助手类，方便文件上传
-
-上述1.中直">
+提供UploadHelper助手类，方便文件上传">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SmartFramework-文件上传">
 <meta property="og:url" content="http://xutch.github.io/2016/05/21/SmartFramework-文件上传/index.html">
@@ -24,10 +22,8 @@
 接收请求，判断请求中是否包含文件
 针对文件，将参数统一封装成Parm
 交由控制层调用Service完成相关业务逻辑
-提供UploadHelper助手类，方便文件上传
-
-上述1.中直">
-<meta property="og:updated_time" content="2016-05-21T14:17:56.101Z">
+提供UploadHelper助手类，方便文件上传">
+<meta property="og:updated_time" content="2016-05-22T01:50:36.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SmartFramework-文件上传">
 <meta name="twitter:description" content="html表单中enctype默认为application/x-www-form-urlencoded,如果用来上传文件，需要设置为multipart/form-data.
@@ -36,9 +32,7 @@
 接收请求，判断请求中是否包含文件
 针对文件，将参数统一封装成Parm
 交由控制层调用Service完成相关业务逻辑
-提供UploadHelper助手类，方便文件上传
-
-上述1.中直">
+提供UploadHelper助手类，方便文件上传">
   
     <link rel="alternative" href="/atom.xml" title="xutch&#39;s blog" type="application/atom+xml">
   
@@ -118,6 +112,7 @@
 <li>交由控制层调用Service完成相关业务逻辑</li>
 <li>提供UploadHelper助手类，方便文件上传</li>
 </ol>
+<a id="more"></a> 
 <p>上述1.中直接利用ServletFileUpload.isMultipartContent(request)方法判断；3.也是简单的。下面详述2.与4.的实现：</p>
 <h2 id="u7531request_u751F_u6210Param"><a href="#u7531request_u751F_u6210Param" class="headerlink" title="由request生成Param"></a>由request生成Param</h2><p>Param类有两个属性：formParamList,fileParamList;其中formParamList是对普通表单的封装，fileParamList是对文件参数的封装</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//表单参数对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FormParam</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String fieldName;</span><br><span class="line">    <span class="keyword">private</span> Object fieldValue;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//文件参数对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileParam</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String fieldName;</span><br><span class="line">    <span class="keyword">private</span> String fileName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> fileSize;</span><br><span class="line">    <span class="keyword">private</span> String contentType;</span><br><span class="line">    <span class="keyword">private</span> InputStream inputStream;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Param</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;FormParam&gt; formParamList;</span><br><span class="line">    <span class="keyword">private</span> List&lt;FileParam&gt; fileParamList;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 获取表单参数映射</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Object&gt; getFieldMap() &#123;</span><br><span class="line">        ..</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 获取上传文件映射</span><br><span class="line">     * &lt;文件名,FileParam列表&gt;</span><br><span class="line">     * /</span><br><span class="line">    public Map&lt;String, List&lt;FileParam&gt;&gt; getFileMap() &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取所有上传文件(文件可能同名，返回的是list)</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;FileParam&gt; <span class="title">getFileList</span><span class="params">(String fieldName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getFileMap().get(fieldName);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 获取唯一上传文件</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> FileParam <span class="title">getFile</span><span class="params">(String fieldName)</span> </span>&#123;</span><br><span class="line">        List&lt;FileParam&gt; fileParamList = getFileList(fieldName);</span><br><span class="line">        <span class="keyword">if</span> (CollectionUtil.isNotEmpty(fileParamList) &amp;&amp; fileParamList.size() == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> fileParamList.get(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -126,7 +121,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xutch.github.io/2016/05/21/SmartFramework-文件上传/" data-id="cioh955x600033cq2jbux0dpz" class="article-share-link">Share</a>
+      <a data-url="http://xutch.github.io/2016/05/21/SmartFramework-文件上传/" data-id="ciohxgonn000348q2tnwtysce" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SmartFramework/">SmartFramework</a></li></ul>

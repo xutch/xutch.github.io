@@ -5,16 +5,31 @@
   
   <title>H264概述 | xutch&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="待续">
+  <meta name="description" content="MPEG-4 AVC/H.264标准提高编码效率的主要改进技术包括：
+
+采用可变图块大小的帧间预测和移动补偿，预测图块的大小不在局限于16*16像素，可小到4*4像素。
+采用空间的帧内预测，预测图块的大小可以是16*16的宏块，也可以是4*4的图块，定义了多种预测方式，目的是找到相关性最大的预测。
+采用DCT演进的“整数变换编码”，提高运算速度
+熵编码采用效率更高的CAVLC（context-ba">
 <meta property="og:type" content="article">
 <meta property="og:title" content="H264概述">
 <meta property="og:url" content="http://xutch.github.io/2016/05/21/H264概述/index.html">
 <meta property="og:site_name" content="xutch's blog">
-<meta property="og:description" content="待续">
-<meta property="og:updated_time" content="2016-05-21T14:29:58.641Z">
+<meta property="og:description" content="MPEG-4 AVC/H.264标准提高编码效率的主要改进技术包括：
+
+采用可变图块大小的帧间预测和移动补偿，预测图块的大小不在局限于16*16像素，可小到4*4像素。
+采用空间的帧内预测，预测图块的大小可以是16*16的宏块，也可以是4*4的图块，定义了多种预测方式，目的是找到相关性最大的预测。
+采用DCT演进的“整数变换编码”，提高运算速度
+熵编码采用效率更高的CAVLC（context-ba">
+<meta property="og:updated_time" content="2016-05-22T02:37:20.210Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="H264概述">
-<meta name="twitter:description" content="待续">
+<meta name="twitter:description" content="MPEG-4 AVC/H.264标准提高编码效率的主要改进技术包括：
+
+采用可变图块大小的帧间预测和移动补偿，预测图块的大小不在局限于16*16像素，可小到4*4像素。
+采用空间的帧内预测，预测图块的大小可以是16*16的宏块，也可以是4*4的图块，定义了多种预测方式，目的是找到相关性最大的预测。
+采用DCT演进的“整数变换编码”，提高运算速度
+熵编码采用效率更高的CAVLC（context-ba">
   
     <link rel="alternative" href="/atom.xml" title="xutch&#39;s blog" type="application/atom+xml">
   
@@ -86,12 +101,32 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>待续</p>
+        <p>MPEG-4 AVC/H.264标准提高编码效率的主要改进技术包括：</p>
+<ol>
+<li>采用可变图块大小的帧间预测和移动补偿，预测图块的大小不在局限于16*16像素，可小到4*4像素。</li>
+<li>采用空间的帧内预测，预测图块的大小可以是16*16的宏块，也可以是4*4的图块，定义了多种预测方式，目的是找到相关性最大的预测。</li>
+<li>采用DCT演进的“整数变换编码”，提高运算速度</li>
+<li>熵编码采用效率更高的CAVLC（context-based adaptive variable length coding）以及CABAC(context-based adaptive binary arithmetic coding)。</li>
+</ol>
+<a id="more"></a>
+<p>三种类型的图像：</p>
+<ol>
+<li>I帧 (intra-picture):包含完整图像，用于其他帧的解码参考</li>
+<li>P帧（predicted-picture):以在它之前出现的帧内图像I作参考图像，对P帧的编码即对他们之间的差值多编码</li>
+<li>B帧（bidirectionally-interpolated picture)：以他之前的I帧以及之后的P帧图像做参考</li>
+</ol>
+<p>MPEG AVC/H.264编解码的过程包括：帧内预测、帧间预测、变换、量化、熵编码</p>
+<p>MPEG AVC/H.264标准分成两个层次：</p>
+<ol>
+<li>VCL（Video Coding Layer）:用于有效表达视像内容</li>
+<li>NAL（Network Abstration Layer)：按照一定格式组织VCL数据并提供header等信息，便于在不同的网络上进行传输</li>
+</ol>
+<p>其中NAL在网络传说中，封装成NALU的形式，即header+data。header的格式通常为0x00 00 00 01 type<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> &#123;  </span><br><span class="line">    NALU_TYPE_SLICE    = <span class="number">1</span>,  </span><br><span class="line">    NALU_TYPE_DPA      = <span class="number">2</span>,  </span><br><span class="line">    NALU_TYPE_DPB      = <span class="number">3</span>,  </span><br><span class="line">    NALU_TYPE_DPC      = <span class="number">4</span>,  </span><br><span class="line">    NALU_TYPE_IDR      = <span class="number">5</span>,  </span><br><span class="line">    NALU_TYPE_SEI      = <span class="number">6</span>,  </span><br><span class="line">    NALU_TYPE_SPS      = <span class="number">7</span>,  </span><br><span class="line">    NALU_TYPE_PPS      = <span class="number">8</span>,  </span><br><span class="line">    NALU_TYPE_AUD      = <span class="number">9</span>,  </span><br><span class="line">    NALU_TYPE_EOSEQ    = <span class="number">10</span>,  </span><br><span class="line">    NALU_TYPE_EOSTREAM = <span class="number">11</span>,  </span><br><span class="line">    NALU_TYPE_FILL     = <span class="number">12</span>,  </span><br><span class="line">&#125; NaluType;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xutch.github.io/2016/05/21/H264概述/" data-id="cioh955wo00003cq2o02x4e08" class="article-share-link">Share</a>
+      <a data-url="http://xutch.github.io/2016/05/21/H264概述/" data-id="ciohxgon4000048q210zenqq9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多媒体技术/">多媒体技术</a></li></ul>
