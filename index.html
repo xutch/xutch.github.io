@@ -65,6 +65,106 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-skynet概述" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/03/skynet概述/" class="article-date">
+  <time datetime="2016-06-03T01:31:20.000Z" itemprop="datePublished">2016-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/03/skynet概述/">skynet概述</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>skynet是一个轻量级的为在线游戏服务器打造的框架。做为核心功能，Skynet 仅解决一个问题：把一个符合规范的 C 模块，从动态库（so 文件）中启动起来，绑定一个永不重复（即使模块退出）的数字 id 做为其 handle 。模块被称为服务（Service），服务间可以自由发送消息。每个模块可以向 Skynet 框架注册一个 callback 函数，用来接收发给它的消息。每个服务都是被一个个消息包驱动，当没有包到来的时候，它们就会处于挂起状态，对 CPU 资源零消耗。如果需要自主逻辑，则可以利用 Skynet 系统提供的 timeout 消息，定期触发。</p>
+<p>一句话解释：skynet主要工作是管理注册服务，并开启多线程协调服务之间的调用和通讯。</p>
+<p>skynet默认开启_timer,_socket,_monitor线程，同时支持配置多个_worker线程.</p>
+<p><img src="/source/img/skynet分层.png" alt="img"></p>
+<p>参考：<br>skynet项目地址：<a href="https://github.com/cloudwu/skynet" target="_blank" rel="external">https://github.com/cloudwu/skynet</a><br>非官方的学习主页：<a href="http://skynetdoc.com/" target="_blank" rel="external">http://skynetdoc.com/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xutch.github.io/2016/06/03/skynet概述/" data-id="ciozk4keq0003lkq2j62ta9dk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/skynet/">skynet</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-paxos算法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/01/paxos算法/" class="article-date">
+  <time datetime="2016-06-01T13:42:05.000Z" itemprop="datePublished">2016-06-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/01/paxos算法/">Paxos算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Paxos解决的问题：（多进程在分布式系统中）确定一个不可变变量的取值<br>分布式存储的一致性问题：数据采用多副本进行存储；多副本的操作需要保持一致性，如：操作：Op1,Op2…Opn在各个副本上要保持相同。</p>
+<p>系统需要满足容错性：</p>
+<ol>
+<li>proposer可以任意故障</li>
+<li>少数Acceptor故障（半数以下）</li>
+</ol>
+<p>系统中的proposer与acceptor角色：<br>proposer：即client进程，用于操作Acceptor<br>Acceptor：系统内部由多个Acceptor组成，负责存储和管理var变量<br>Acceptor内部变量：<accepted_epoch,accepted_value>,<latest_prepared_epoch></latest_prepared_epoch></accepted_epoch,accepted_value></p>
+<ol>
+<li>多进程并发的问题：Acceptor采用抢占式的访问权控制；每个proposer进程在请求的时候携带epoch变量，epoch随时间递增；新（大）的epoch对应的proposer能够抢占旧（小）的epoch对应的proposer的访问权。</li>
+<li>Acceptor值不变的保证：在旧epoch无法生成确定性的取值时，新的epoch才能提交自己的取值；一旦旧的epoch设置了确定性取值，新的epoch会认同此值，不会更改。</li>
+<li>多Acceptor值不同的问题：多数服从少数的原则</li>
+</ol>
+<p>参考资料：</p>
+<ol>
+<li><a href="http://www.tudou.com/programs/view/e8zM8dAL6hM/" target="_blank" rel="external">http://www.tudou.com/programs/view/e8zM8dAL6hM/</a></li>
+<li><a href="http://iunknown.iteye.com/blog/2246484?from=message&amp;isappinstalled=0" target="_blank" rel="external">http://iunknown.iteye.com/blog/2246484?from=message&amp;isappinstalled=0</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xutch.github.io/2016/06/01/paxos算法/" data-id="ciozk4ket0006lkq2bcd66tnq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式存储/">分布式存储</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Java分布式对象基础" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/05/22/Java分布式对象基础/" class="article-date">
@@ -93,12 +193,15 @@
 <li>CORBA：通用对象请求代理架构，支持任何编程语言编写的对象之间的方法调用。使用Internet Inter-ORB协议。</li>
 <li>Web Service：独立于语言，使用XML的通信格式，对象的传输则采用SOAP（Simple Object Access Protocol）</li>
 </ol>
-<h2 id="u8FDC_u7A0B_u65B9_u6CD5_u8C03_u7528_uFF08RMI_uFF09"><a href="#u8FDC_u7A0B_u65B9_u6CD5_u8C03_u7528_uFF08RMI_uFF09" class="headerlink" title="远程方法调用（RMI）"></a>远程方法调用（RMI）</h2><p>远程对象的能力是由客户端与服务器端之间共享的接口所表示的。</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2016/05/22/Java分布式对象基础/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xutch.github.io/2016/05/22/Java分布式对象基础/" data-id="cioicz4ws0006noq2cmxpamqv" class="article-share-link">Share</a>
+      <a data-url="http://xutch.github.io/2016/05/22/Java分布式对象基础/" data-id="ciozk4kf0000clkq2t0zz1yge" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
@@ -148,7 +251,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xutch.github.io/2016/05/21/H264概述/" data-id="cioicz4w70000noq2qcsgjlq9" class="article-share-link">Share</a>
+      <a data-url="http://xutch.github.io/2016/05/21/H264概述/" data-id="ciozk4ke90000lkq2dnkao9dt" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多媒体技术/">多媒体技术</a></li></ul>
@@ -199,7 +302,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xutch.github.io/2016/05/21/SmartFramework-文件上传/" data-id="cioicz4wp0003noq2dgonxz0e" class="article-share-link">Share</a>
+      <a data-url="http://xutch.github.io/2016/05/21/SmartFramework-文件上传/" data-id="ciozk4kew0009lkq2iajpnj46" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SmartFramework/">SmartFramework</a></li></ul>
@@ -223,7 +326,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SmartFramework/">SmartFramework</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多媒体技术/">多媒体技术</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SmartFramework/">SmartFramework</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/skynet/">skynet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式存储/">分布式存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多媒体技术/">多媒体技术</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -232,7 +335,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/SmartFramework/" style="font-size: 10px;">SmartFramework</a> <a href="/tags/多媒体技术/" style="font-size: 10px;">多媒体技术</a>
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/SmartFramework/" style="font-size: 10px;">SmartFramework</a> <a href="/tags/skynet/" style="font-size: 10px;">skynet</a> <a href="/tags/分布式存储/" style="font-size: 10px;">分布式存储</a> <a href="/tags/多媒体技术/" style="font-size: 10px;">多媒体技术</a>
     </div>
   </div>
 
@@ -241,7 +344,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -251,6 +354,14 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/06/03/skynet概述/">skynet概述</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/01/paxos算法/">Paxos算法</a>
+          </li>
         
           <li>
             <a href="/2016/05/22/Java分布式对象基础/">Java分布式对象基础</a>

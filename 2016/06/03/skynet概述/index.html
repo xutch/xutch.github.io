@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives | xutch&#39;s blog</title>
+  <title>skynet概述 | xutch&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="xutch的博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="xutch's blog">
-<meta property="og:url" content="http://xutch.github.io/archives/index.html">
+  <meta name="description" content="skynet是一个轻量级的为在线游戏服务器打造的框架。做为核心功能，Skynet 仅解决一个问题：把一个符合规范的 C 模块，从动态库（so 文件）中启动起来，绑定一个永不重复（即使模块退出）的数字 id 做为其 handle 。模块被称为服务（Service），服务间可以自由发送消息。每个模块可以向 Skynet 框架注册一个 callback 函数，用来接收发给它的消息。每个服务都是被一个个消">
+<meta property="og:type" content="article">
+<meta property="og:title" content="skynet概述">
+<meta property="og:url" content="http://xutch.github.io/2016/06/03/skynet概述/index.html">
 <meta property="og:site_name" content="xutch's blog">
-<meta property="og:description" content="xutch的博客">
+<meta property="og:description" content="skynet是一个轻量级的为在线游戏服务器打造的框架。做为核心功能，Skynet 仅解决一个问题：把一个符合规范的 C 模块，从动态库（so 文件）中启动起来，绑定一个永不重复（即使模块退出）的数字 id 做为其 handle 。模块被称为服务（Service），服务间可以自由发送消息。每个模块可以向 Skynet 框架注册一个 callback 函数，用来接收发给它的消息。每个服务都是被一个个消">
+<meta property="og:image" content="http://xutch.github.io/source/img/skynet分层.png">
+<meta property="og:updated_time" content="2016-06-03T09:56:17.939Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="xutch's blog">
-<meta name="twitter:description" content="xutch的博客">
+<meta name="twitter:title" content="skynet概述">
+<meta name="twitter:description" content="skynet是一个轻量级的为在线游戏服务器打造的框架。做为核心功能，Skynet 仅解决一个问题：把一个符合规范的 C 模块，从动态库（so 文件）中启动起来，绑定一个永不重复（即使模块退出）的数字 id 做为其 handle 。模块被称为服务（Service），服务间可以自由发送消息。每个模块可以向 Skynet 框架注册一个 callback 函数，用来接收发给它的消息。每个服务都是被一个个消">
   
     <link rel="alternative" href="/atom.xml" title="xutch&#39;s blog" type="application/atom+xml">
   
@@ -63,116 +65,80 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/06/03/skynet概述/" class="archive-article-date">
-  <time datetime="2016-06-03T01:31:20.000Z" itemprop="datePublished">6月 3</time>
+        <section id="main"><article id="post-skynet概述" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/03/skynet概述/" class="article-date">
+  <time datetime="2016-06-03T01:31:20.000Z" itemprop="datePublished">2016-06-03</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/03/skynet概述/">skynet概述</a>
+    <h1 class="article-title" itemprop="name">
+      skynet概述
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/06/01/paxos算法/" class="archive-article-date">
-  <time datetime="2016-06-01T13:42:05.000Z" itemprop="datePublished">6月 1</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/01/paxos算法/">Paxos算法</a>
-    </h1>
-  
+        <p>skynet是一个轻量级的为在线游戏服务器打造的框架。做为核心功能，Skynet 仅解决一个问题：把一个符合规范的 C 模块，从动态库（so 文件）中启动起来，绑定一个永不重复（即使模块退出）的数字 id 做为其 handle 。模块被称为服务（Service），服务间可以自由发送消息。每个模块可以向 Skynet 框架注册一个 callback 函数，用来接收发给它的消息。每个服务都是被一个个消息包驱动，当没有包到来的时候，它们就会处于挂起状态，对 CPU 资源零消耗。如果需要自主逻辑，则可以利用 Skynet 系统提供的 timeout 消息，定期触发。</p>
+<p>一句话解释：skynet主要工作是管理注册服务，并开启多线程协调服务之间的调用和通讯。</p>
+<p>skynet默认开启_timer,_socket,_monitor线程，同时支持配置多个_worker线程.</p>
+<p><img src="/source/img/skynet分层.png" alt="img"></p>
+<p>参考：<br>skynet项目地址：<a href="https://github.com/cloudwu/skynet" target="_blank" rel="external">https://github.com/cloudwu/skynet</a><br>非官方的学习主页：<a href="http://skynetdoc.com/" target="_blank" rel="external">http://skynetdoc.com/</a></p>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/05/22/Java分布式对象基础/" class="archive-article-date">
-  <time datetime="2016-05-22T08:43:07.000Z" itemprop="datePublished">5月 22</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/05/22/Java分布式对象基础/">Java分布式对象基础</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/05/21/H264概述/" class="archive-article-date">
-  <time datetime="2016-05-21T14:29:10.000Z" itemprop="datePublished">5月 21</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xutch.github.io/2016/06/03/skynet概述/" data-id="ciozk4keq0003lkq2j62ta9dk" class="article-share-link">Share</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/05/21/H264概述/">H264概述</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/05/21/SmartFramework-文件上传/" class="archive-article-date">
-  <time datetime="2016-05-21T12:45:51.000Z" itemprop="datePublished">5月 21</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/05/21/SmartFramework-文件上传/">SmartFramework-文件上传</a>
-    </h1>
-  
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/skynet/">skynet</a></li></ul>
 
-    </header>
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/06/01/paxos算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Paxos算法</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
-</section>
+
+
+
+  <section id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="post-skynet概述" data-title="skynet概述" data-url="http://xutch.github.io/2016/06/03/skynet概述/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'xutch'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  </section>
+  </section>
         
           <aside id="sidebar">
   

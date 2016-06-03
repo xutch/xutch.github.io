@@ -3,33 +3,36 @@
 <head>
   <meta charset="utf-8">
   
-  <title>H264概述 | xutch&#39;s blog</title>
+  <title>Paxos算法 | xutch&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MPEG-4 AVC/H.264标准提高编码效率的主要改进技术包括：
+  <meta name="description" content="Paxos解决的问题：（多进程在分布式系统中）确定一个不可变变量的取值分布式存储的一致性问题：数据采用多副本进行存储；多副本的操作需要保持一致性，如：操作：Op1,Op2…Opn在各个副本上要保持相同。
+系统需要满足容错性：
 
-采用可变图块大小的帧间预测和移动补偿，预测图块的大小不在局限于16*16像素，可小到4*4像素。
-采用空间的帧内预测，预测图块的大小可以是16*16的宏块，也可以是4*4的图块，定义了多种预测方式，目的是找到相关性最大的预测。
-采用DCT演进的“整数变换编码”，提高运算速度
-熵编码采用效率更高的CAVLC（context-ba">
+proposer可以任意故障
+少数Acceptor故障（半数以下）
+
+系统中的proposer与acceptor角色：proposer：即client进程，用于操作Acce">
 <meta property="og:type" content="article">
-<meta property="og:title" content="H264概述">
-<meta property="og:url" content="http://xutch.github.io/2016/05/21/H264概述/index.html">
+<meta property="og:title" content="Paxos算法">
+<meta property="og:url" content="http://xutch.github.io/2016/06/01/paxos算法/index.html">
 <meta property="og:site_name" content="xutch's blog">
-<meta property="og:description" content="MPEG-4 AVC/H.264标准提高编码效率的主要改进技术包括：
+<meta property="og:description" content="Paxos解决的问题：（多进程在分布式系统中）确定一个不可变变量的取值分布式存储的一致性问题：数据采用多副本进行存储；多副本的操作需要保持一致性，如：操作：Op1,Op2…Opn在各个副本上要保持相同。
+系统需要满足容错性：
 
-采用可变图块大小的帧间预测和移动补偿，预测图块的大小不在局限于16*16像素，可小到4*4像素。
-采用空间的帧内预测，预测图块的大小可以是16*16的宏块，也可以是4*4的图块，定义了多种预测方式，目的是找到相关性最大的预测。
-采用DCT演进的“整数变换编码”，提高运算速度
-熵编码采用效率更高的CAVLC（context-ba">
-<meta property="og:updated_time" content="2016-05-22T02:37:20.210Z">
+proposer可以任意故障
+少数Acceptor故障（半数以下）
+
+系统中的proposer与acceptor角色：proposer：即client进程，用于操作Acce">
+<meta property="og:updated_time" content="2016-06-01T14:27:41.020Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="H264概述">
-<meta name="twitter:description" content="MPEG-4 AVC/H.264标准提高编码效率的主要改进技术包括：
+<meta name="twitter:title" content="Paxos算法">
+<meta name="twitter:description" content="Paxos解决的问题：（多进程在分布式系统中）确定一个不可变变量的取值分布式存储的一致性问题：数据采用多副本进行存储；多副本的操作需要保持一致性，如：操作：Op1,Op2…Opn在各个副本上要保持相同。
+系统需要满足容错性：
 
-采用可变图块大小的帧间预测和移动补偿，预测图块的大小不在局限于16*16像素，可小到4*4像素。
-采用空间的帧内预测，预测图块的大小可以是16*16的宏块，也可以是4*4的图块，定义了多种预测方式，目的是找到相关性最大的预测。
-采用DCT演进的“整数变换编码”，提高运算速度
-熵编码采用效率更高的CAVLC（context-ba">
+proposer可以任意故障
+少数Acceptor故障（半数以下）
+
+系统中的proposer与acceptor角色：proposer：即client进程，用于操作Acce">
   
     <link rel="alternative" href="/atom.xml" title="xutch&#39;s blog" type="application/atom+xml">
   
@@ -79,10 +82,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-H264概述" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-paxos算法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/21/H264概述/" class="article-date">
-  <time datetime="2016-05-21T14:29:10.000Z" itemprop="datePublished">2016-05-21</time>
+    <a href="/2016/06/01/paxos算法/" class="article-date">
+  <time datetime="2016-06-01T13:42:05.000Z" itemprop="datePublished">2016-06-01</time>
 </a>
     
   </div>
@@ -93,7 +96,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      H264概述
+      Paxos算法
     </h1>
   
 
@@ -101,35 +104,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>MPEG-4 AVC/H.264标准提高编码效率的主要改进技术包括：</p>
+        <p>Paxos解决的问题：（多进程在分布式系统中）确定一个不可变变量的取值<br>分布式存储的一致性问题：数据采用多副本进行存储；多副本的操作需要保持一致性，如：操作：Op1,Op2…Opn在各个副本上要保持相同。</p>
+<p>系统需要满足容错性：</p>
 <ol>
-<li>采用可变图块大小的帧间预测和移动补偿，预测图块的大小不在局限于16*16像素，可小到4*4像素。</li>
-<li>采用空间的帧内预测，预测图块的大小可以是16*16的宏块，也可以是4*4的图块，定义了多种预测方式，目的是找到相关性最大的预测。</li>
-<li>采用DCT演进的“整数变换编码”，提高运算速度</li>
-<li>熵编码采用效率更高的CAVLC（context-based adaptive variable length coding）以及CABAC(context-based adaptive binary arithmetic coding)。</li>
+<li>proposer可以任意故障</li>
+<li>少数Acceptor故障（半数以下）</li>
 </ol>
-<a id="more"></a>
-<p>三种类型的图像：</p>
+<p>系统中的proposer与acceptor角色：<br>proposer：即client进程，用于操作Acceptor<br>Acceptor：系统内部由多个Acceptor组成，负责存储和管理var变量<br>Acceptor内部变量：<accepted_epoch,accepted_value>,<latest_prepared_epoch></latest_prepared_epoch></accepted_epoch,accepted_value></p>
 <ol>
-<li>I帧 (intra-picture):包含完整图像，用于其他帧的解码参考</li>
-<li>P帧（predicted-picture):以在它之前出现的帧内图像I作参考图像，对P帧的编码即对他们之间的差值多编码</li>
-<li>B帧（bidirectionally-interpolated picture)：以他之前的I帧以及之后的P帧图像做参考</li>
+<li>多进程并发的问题：Acceptor采用抢占式的访问权控制；每个proposer进程在请求的时候携带epoch变量，epoch随时间递增；新（大）的epoch对应的proposer能够抢占旧（小）的epoch对应的proposer的访问权。</li>
+<li>Acceptor值不变的保证：在旧epoch无法生成确定性的取值时，新的epoch才能提交自己的取值；一旦旧的epoch设置了确定性取值，新的epoch会认同此值，不会更改。</li>
+<li>多Acceptor值不同的问题：多数服从少数的原则</li>
 </ol>
-<p>MPEG AVC/H.264编解码的过程包括：帧内预测、帧间预测、变换、量化、熵编码</p>
-<p>MPEG AVC/H.264标准分成两个层次：</p>
+<p>参考资料：</p>
 <ol>
-<li>VCL（Video Coding Layer）:用于有效表达视像内容</li>
-<li>NAL（Network Abstration Layer)：按照一定格式组织VCL数据并提供header等信息，便于在不同的网络上进行传输</li>
+<li><a href="http://www.tudou.com/programs/view/e8zM8dAL6hM/" target="_blank" rel="external">http://www.tudou.com/programs/view/e8zM8dAL6hM/</a></li>
+<li><a href="http://iunknown.iteye.com/blog/2246484?from=message&amp;isappinstalled=0" target="_blank" rel="external">http://iunknown.iteye.com/blog/2246484?from=message&amp;isappinstalled=0</a></li>
 </ol>
-<p>其中NAL在网络传说中，封装成NALU的形式，即header+data。header的格式通常为0x00 00 00 01 type<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> &#123;  </span><br><span class="line">    NALU_TYPE_SLICE    = <span class="number">1</span>,  </span><br><span class="line">    NALU_TYPE_DPA      = <span class="number">2</span>,  </span><br><span class="line">    NALU_TYPE_DPB      = <span class="number">3</span>,  </span><br><span class="line">    NALU_TYPE_DPC      = <span class="number">4</span>,  </span><br><span class="line">    NALU_TYPE_IDR      = <span class="number">5</span>,  </span><br><span class="line">    NALU_TYPE_SEI      = <span class="number">6</span>,  </span><br><span class="line">    NALU_TYPE_SPS      = <span class="number">7</span>,  </span><br><span class="line">    NALU_TYPE_PPS      = <span class="number">8</span>,  </span><br><span class="line">    NALU_TYPE_AUD      = <span class="number">9</span>,  </span><br><span class="line">    NALU_TYPE_EOSEQ    = <span class="number">10</span>,  </span><br><span class="line">    NALU_TYPE_EOSTREAM = <span class="number">11</span>,  </span><br><span class="line">    NALU_TYPE_FILL     = <span class="number">12</span>,  </span><br><span class="line">&#125; NaluType;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xutch.github.io/2016/05/21/H264概述/" data-id="ciozk4ke90000lkq2dnkao9dt" class="article-share-link">Share</a>
+      <a data-url="http://xutch.github.io/2016/06/01/paxos算法/" data-id="ciozk4ket0006lkq2bcd66tnq" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多媒体技术/">多媒体技术</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式存储/">分布式存储</a></li></ul>
 
     </footer>
   </div>
@@ -137,19 +136,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/05/22/Java分布式对象基础/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/06/03/skynet概述/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Java分布式对象基础
+          skynet概述
         
       </div>
     </a>
   
   
-    <a href="/2016/05/21/SmartFramework-文件上传/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/05/22/Java分布式对象基础/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">SmartFramework-文件上传</div>
+      <div class="article-nav-title">Java分布式对象基础</div>
     </a>
   
 </nav>
@@ -161,7 +160,7 @@
 
   <section id="comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="post-H264概述" data-title="H264概述" data-url="http://xutch.github.io/2016/05/21/H264概述/"></div>
+    <div class="ds-thread" data-thread-key="post-paxos算法" data-title="Paxos算法" data-url="http://xutch.github.io/2016/06/01/paxos算法/"></div>
     <!-- 多说评论框 end -->
     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
     <script type="text/javascript">
